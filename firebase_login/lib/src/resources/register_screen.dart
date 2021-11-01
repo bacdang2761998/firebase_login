@@ -98,11 +98,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
       controller: passwordEdittingController,
       obscureText: true,
       validator: (value) {
-        // RegExp regExp = new RegExp(r'^{6}$');
+        RegExp regExp = new RegExp(r'^.{6,}$');
         if (value!.isEmpty) {
           return ("Password is requied for login");
         }
-        if (value.length<6) {
+        if (value.length < 6) {
           return ("Please Enter Valid Password(Min 6 Character)");
         }
       },
@@ -237,9 +237,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         .set(userModel.toMap());
     Fluttertoast.showToast(msg: 'Account created successfull');
 
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => BottomBar()),
-        (route) => false);
+    Navigator.pushAndRemoveUntil(context,
+        MaterialPageRoute(builder: (context) => BottomBar()), (route) => false);
   }
 }

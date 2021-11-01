@@ -15,7 +15,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   LoginBloc bloc = new LoginBloc();
   final _auth = FirebaseAuth.instance;
 
@@ -29,11 +28,11 @@ class _LoginScreenState extends State<LoginScreen> {
       autofocus: false,
       controller: emailController,
       keyboardType: TextInputType.emailAddress,
-      validator: (value){
-        if(value!.isEmpty){
+      validator: (value) {
+        if (value!.isEmpty) {
           return ("Please Enter Your Email");
         }
-        if(!RegExp("^[a-zA-z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)){
+        if (!RegExp("^[a-zA-z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)) {
           return ("Please Enter a valid email");
         }
         return null;
@@ -52,13 +51,13 @@ class _LoginScreenState extends State<LoginScreen> {
       autofocus: false,
       controller: passwordController,
       obscureText: true,
-      validator: (value){
-        // RegExp regExp = new RegExp(r'^{6}$');
-        if(value!.isEmpty){
+      validator: (value) {
+        RegExp regExp = new RegExp(r'^.{6,}$');
+        if (value!.isEmpty) {
           return ("Password is requied for login");
         }
-        if(value.length<6){
-          return("Please Enter Valid Password(Min 6 Character)");
+        if (value.length < 6) {
+          return ("Please Enter Valid Password(Min 6 Character)");
         }
       },
       onSaved: (value) {
@@ -147,18 +146,18 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void signIn(String email, String password) async{
-    if(_formKey.currentState!.validate()){
-      await _auth.signInWithEmailAndPassword(
-          email: email, password: password)
+  void signIn(String email, String password) async {
+    if (_formKey.currentState!.validate()) {
+      await _auth
+          .signInWithEmailAndPassword(email: email, password: password)
           .then((uid) => {
-            Fluttertoast.showToast(msg: "Login Succesfull"),
-            Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context)=>BottomBar()))
-      }).catchError((e){
+                Fluttertoast.showToast(msg: "Login Succesfull"),
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => BottomBar()))
+              })
+          .catchError((e) {
         Fluttertoast.showToast(msg: e!.massage);
       });
     }
   }
-
 }
